@@ -1,0 +1,21 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos temporales
+*.tmp
+*.log
+
+# Wrangler (Cloudflare)
+.wrangler/
+wrangler.jsonc
+
+# Node
+node_modules/

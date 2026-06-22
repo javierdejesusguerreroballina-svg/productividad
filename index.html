@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Impulso Productivo — JavierWarrior</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-app: #fdfbf7;
+            --cream-dark: #f1ede4;
+            --dark: #0f172a;
+            --gold: #c5a059;
+            --gold-light: rgba(197,160,89,0.15);
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --text-muted: #94a3b8;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+
+            /* MODOS — se mantienen funcionales */
+            --rush-primary: #E11D48;
+            --rush-bg: #FFF1F2;
+            --flow-primary: #059669;
+            --flow-bg: #ECFDF5;
+            --multi-primary: #7C3AED;
+            --multi-bg: #F5F3FF;
+
+            --shadow-soft: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --radius-main: 16px;
+            --font-ui: 'Lato', system-ui, sans-serif;
+        }
+
+        * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            font-family: var(--font-ui);
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            transition: background-color 0.5s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .app-header {
+            background: var(--dark);
+            padding: 0 20px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 200;
+        }
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #fdfbf7;
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+        .header-logo span { color: var(--gold); }
+        .header-blog {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* SCREENS */
+        .app-body {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 24px;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            z-index: 1;
+            overflow-y: auto;
+        }
+        .screen.active { opacity: 1; pointer-events: all; z-index: 10; }
+
+        /* BOTONES GLOBALES */
+        .btn {
+            padding: 16px 24px; border: none; border-radius: var(--radius-main);
+            font-size: 1rem; font-weight: 900; cursor: pointer;
+            margin: 10px 0; width: 100%; max-width: 340px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.2s ease;
+            text-transform: uppercase; letter-spacing: 1px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-ui);
+        }
+        .btn:active { transform: scale(0.98); box-shadow: none; }
+
+        input, select {
+            width: 100%; max-width: 340px; padding: 16px; margin-bottom: 20px;
+            font-size: 1.05rem; border-radius: var(--radius-main);
+            border: 1px solid var(--border);
+            background: var(--card-bg); color: var(--text-main);
+            outline: none; box-shadow: var(--shadow-soft);
+            font-family: var(--font-ui);
+        }
+        input:focus { border-color: var(--gold); }
+
+        /* HOME */
+        #screen-home { background-color: var(--bg-app); }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; margin-bottom: 4px; font-weight: 600;
+            color: var(--dark); letter-spacing: -0.03em;
+        }
+        .hero-sub { color: var(--gold); margin-bottom: 8px; font-size: 0.78rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; }
+
+        /* INFO BOX */
+        .info-box {
+            background: var(--gold-light);
+            border: 1px solid rgba(197,160,89,0.3);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 28px;
+            max-width: 340px;
+            width: 100%;
+            font-size: 0.82rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+            text-align: left;
+        }
+        .info-box strong { color: var(--dark); display: block; margin-bottom: 4px; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+
+        .btn-rush { background: var(--rush-primary); color: white; }
+        .btn-flow { background: var(--card-bg); color: var(--flow-primary); border: 2px solid var(--flow-primary); }
+        .btn-multi { background: var(--card-bg); color: var(--multi-primary); border: 2px solid var(--multi-primary); margin-top: 20px; }
+        .desc { font-size: 0.82rem; margin-top: -6px; margin-bottom: 16px; color: var(--text-muted); font-weight: 700; text-align: center; max-width: 340px; }
+
+        /* SETUP SCREENS */
+        .setup-screen { background: var(--bg-app); }
+        .setup-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 8px; font-weight: 600; }
+        .setup-hint { font-size: 0.82rem; color: var(--text-sub); margin-bottom: 24px; text-align: center; max-width: 300px; line-height: 1.5; }
+        .btn-cancel { background: transparent; color: var(--text-sub); box-shadow: none; font-weight: 700; text-transform: none; letter-spacing: 0; }
+
+        /* TIMER */
+        #screen-timer { text-align: center; transition: background 0.5s; }
+
+        body.mode-rush #screen-timer { background-color: var(--rush-bg); }
+        body.mode-rush .timer-display { font-size: 4.2rem; font-weight: 900; color: var(--rush-primary); letter-spacing: -2px; font-feature-settings: "tnum"; font-family: var(--font-ui); }
+        body.mode-rush .deliverable-display { font-size: 1.3rem; text-transform: uppercase; color: #881337; font-weight: 700; margin-bottom: 16px; }
+        body.mode-rush .urgent-msg { font-size: 1.1rem; color: #BE123C; font-weight: 700; margin-top: 32px; min-height: 3em; animation: pulse-text 1s infinite; display: none; }
+
+        body.mode-flow #screen-timer { background-color: var(--flow-bg); }
+        body.mode-flow .timer-display { font-size: 3.5rem; font-weight: 300; color: var(--flow-primary); opacity: 0.8; font-feature-settings: "tnum"; font-family: var(--font-ui); }
+        body.mode-flow .deliverable-display { font-size: 1.2rem; margin-bottom: 24px; font-style: italic; color: #064E3B; }
+        body.mode-flow .urgent-msg { display: none; }
+
+        /* BOTÓN DISTRACCIÓN */
+        .distraction-btn-single {
+            margin-top: 20px; background: transparent;
+            padding: 12px 24px; border-radius: 50px;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            display: flex; align-items: center; gap: 10px;
+            transition: transform 0.1s; font-family: var(--font-ui);
+        }
+        .distraction-btn-single:active { transform: scale(0.95); }
+        .dist-badge {
+            background: rgba(0,0,0,0.1); padding: 2px 8px;
+            border-radius: 10px; font-weight: 900;
+        }
+        body.mode-rush .distraction-btn-single { border: 1px solid var(--rush-primary); color: var(--rush-primary); }
+        body.mode-flow .distraction-btn-single { border: 1px solid var(--flow-primary); color: var(--flow-primary); }
+
+        /* MULTITASK */
+        body.mode-multi #screen-multi-active { background-color: var(--multi-bg); }
+        #screen-multi-active { text-align: center; }
+        .multi-timer { font-size: 3rem; margin-bottom: 12px; color: var(--multi-primary); font-weight: 900; font-variant-numeric: tabular-nums; font-family: var(--font-ui); }
+        .multi-header { font-size: 1.4rem; color: #4C1D95; margin-bottom: 4px; font-weight: 700; font-family: 'Playfair Display', serif; }
+        .multi-level-label { font-size: 0.78rem; color: #6D28D9; margin-bottom: 32px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 900; }
+
+        .tracker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; max-width: 340px; margin-bottom: 24px; }
+        .track-btn {
+            padding: 24px 12px; border-radius: 20px; border: none;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: transform 0.1s; box-shadow: var(--shadow-soft); background: white;
+        }
+        .track-btn:active { transform: scale(0.96); }
+        .track-dist { color: #E11D48; border: 1px solid #FECDD3; }
+        .track-prod { color: #059669; border: 1px solid #A7F3D0; }
+        .track-count { font-size: 2.5rem; margin-top: 8px; font-weight: 900; font-family: var(--font-ui); }
+        .track-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+
+        .focus-warning {
+            position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
+            background: #E11D48; color: white; padding: 14px 28px;
+            border-radius: 50px; font-weight: 700; font-size: 0.95rem;
+            z-index: 100; display: none; box-shadow: 0 10px 25px rgba(225,29,72,0.4);
+            animation: popIn 0.4s; white-space: nowrap; font-family: var(--font-ui);
+        }
+
+        /* DEBRIEF */
+        #screen-debrief { background-color: white; text-align: center; padding: 32px; }
+        .debrief-q { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 32px; font-weight: 600; color: var(--dark); }
+        .debrief-msg { font-size: 1.1rem; margin: 20px 0; color: var(--flow-primary); font-weight: 700; display: none; animation: fadeIn 0.6s; }
+
+        .cool-down-card, .stats-card {
+            background: var(--cream-dark); padding: 20px; border-radius: 16px;
+            margin: 20px 0; display: none; text-align: left; animation: slideUp 0.6s ease-out;
+            border: 1px solid var(--border);
+        }
+        .cool-down-title { color: var(--gold); font-weight: 900; font-size: 0.78rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .stats-title { color: var(--multi-primary); font-weight: 900; font-size: 0.78rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .cool-down-text, .stats-text { font-size: 1rem; color: var(--text-soft); line-height: 1.6; }
+
+        /* HISTORIAL */
+        .btn-history-link {
+            border: none; background: none; color: var(--text-muted);
+            font-size: 0.85rem; font-weight: 700; margin-top: 24px;
+            padding: 8px 16px; cursor: pointer; font-family: var(--font-ui);
+        }
+        #screen-history { background-color: var(--bg-app); align-items: stretch; padding: 20px 20px 16px; }
+        .history-header { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 420px; margin: 0 auto 16px; }
+        .history-header h2 { margin: 0; font-size: 1.3rem; color: var(--dark); font-family: 'Playfair Display', serif; font-weight: 600; }
+        .btn-back { border: none; background: none; color: var(--text-sub); font-size: 0.9rem; font-weight: 700; cursor: pointer; padding: 8px; font-family: var(--font-ui); }
+        .history-summary { display: flex; gap: 10px; width: 100%; max-width: 420px; margin: 0 auto 16px; }
+        .summary-card { flex: 1; background: var(--card-bg); border-radius: var(--radius-main); box-shadow: var(--shadow-soft); padding: 14px 8px; text-align: center; border: 1px solid var(--border); }
+        .summary-num { font-size: 1.4rem; font-weight: 900; color: var(--dark); display: block; }
+        .summary-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+        .history-list { width: 100%; max-width: 420px; margin: 0 auto; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .history-empty { text-align: center; color: var(--text-muted); margin-top: 60px; font-size: 0.9rem; }
+        .history-item { background: var(--card-bg); border-radius: 14px; box-shadow: var(--shadow-soft); padding: 14px 16px; margin-bottom: 10px; border-left: 4px solid var(--border); }
+        .history-item.mode-rush { border-left-color: var(--rush-primary); }
+        .history-item.mode-flow { border-left-color: var(--flow-primary); }
+        .history-item.mode-multi { border-left-color: var(--multi-primary); }
+        .history-row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+        .history-label { font-weight: 700; color: var(--dark); font-size: 0.92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .history-date { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+        .history-meta { font-size: 0.78rem; color: var(--text-sub); margin-top: 4px; }
+        .history-tag { display: inline-block; font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 6px; margin-right: 6px; text-transform: uppercase; }
+        .tag-rush { background: var(--rush-bg); color: var(--rush-primary); }
+        .tag-flow { background: var(--flow-bg); color: var(--flow-primary); }
+        .tag-multi { background: var(--multi-bg); color: var(--multi-primary); }
+        .btn-clear-history { border: none; background: none; color: var(--rush-primary); font-size: 0.82rem; font-weight: 700; cursor: pointer; padding: 14px; margin: 4px auto 0; font-family: var(--font-ui); }
+
+        /* BOTONES DEBRIEF */
+        .controls { position: absolute; bottom: 32px; width: 100%; display: flex; justify-content: center; }
+        .btn-stop { background: white; color: var(--text-main); border: 1px solid var(--border); font-size: 0.85rem; max-width: 180px; }
+        .btn-action { background: var(--flow-primary); color: white; min-width: 130px; }
+        .btn-neg { background: white; color: var(--text-sub); border: 1px solid var(--border); min-width: 130px; }
+        .btn-new { background: var(--dark); color: white; width: 100%; margin-top: 20px; display: none; }
+
+        /* FOOTER */
+        .app-footer {
+            background: var(--dark);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-shrink: 0;
+        }
+        .footer-link {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: rgba(253,251,247,0.5);
+            text-decoration: none;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .footer-link:hover { color: var(--gold); }
+        .footer-sep { color: rgba(253,251,247,0.2); font-size: 0.7rem; }
+
+        @keyframes pulse-bg { 0% { background: var(--rush-bg); } 50% { background: #FFE4E6; } 100% { background: var(--rush-bg); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { transform: translate(-50%, 40px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .urgent-bg { animation: pulse-bg 1s infinite; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="app-header">
+        <a href="https://javierwarrior.com" class="header-logo">Javier<span>Warrior</span></a>
+        <a href="https://javierwarrior.hashnode.dev" class="header-blog">Blog</a>
+    </header>
+
+    <!-- CONTENIDO -->
+    <div class="app-body">
+
+        <!-- HOME -->
+        <div id="screen-home" class="screen active">
+            <h1 class="hero-title">Impulso Productivo</h1>
+            <p class="hero-sub">Protocolo de Rendimiento</p>
+
+            <div class="info-box">
+                <strong>¿Cómo funciona?</strong>
+                Elige el modo que se adapte a lo que necesitas hacer ahora. <strong>Rush</strong> para tareas urgentes con tiempo limitado. <strong>Flow</strong> para trabajo profundo y creativo. <strong>Reunión</strong> para gestionar juntas con foco y registro.
+            </div>
+
+            <button class="btn btn-rush" onclick="navTo('setup-rush')">MODO RUSH</button>
+            <p class="desc">Ejecución. Adrenalina. Velocidad.</p>
+
+            <button class="btn btn-flow" onclick="navTo('setup-flow')">MODO FLOW</button>
+            <p class="desc">Creatividad. Profundidad. Enfoque.</p>
+
+            <button class="btn btn-multi" onclick="navTo('setup-multi')">MODO REUNIÓN</button>
+            <p class="desc">Gestión de Juntas y Control.</p>
+
+            <button class="btn-history-link" onclick="openHistory()">📊 Ver Historial</button>
+        </div>
+
+        <!-- SETUP RUSH -->
+        <div id="setup-rush" class="screen setup-screen">
+            <h2 class="setup-title" style="color:var(--rush-primary)">Modo Rush</h2>
+            <p class="setup-hint">Para tareas urgentes con entrega definida. El timer cuenta regresivo con presión sonora y mensajes de activación. Al 80% del tiempo restante, el modo urgente se activa.</p>
+            <input type="text" id="rush-deliverable" placeholder="¿Cuál es tu objetivo?" autocomplete="off">
+            <select id="rush-time">
+                <option value="10">10 Minutos</option>
+                <option value="15" selected>15 Minutos</option>
+                <option value="20">20 Minutos</option>
+                <option value="30">30 Minutos</option>
+            </select>
+            <button class="btn btn-rush" onclick="startSession('rush')">INICIAR RUSH</button>
+            <button class="btn btn-cancel" onclick="goHome()">Cancelar</button>
+        </div>
+
+        <!-- SETUP FLOW -->
+        <div id="setup-flow" class="screen setup-screen">
+            <h2 class="setup-title" style="color:var(--flow-primary)">Modo Flow</h2>
+            <p class="setup-hint">Para trabajo profundo que requiere concentración sostenida. Ruido marrón de fondo para facilitar el estado de flujo. Sin interrupciones, sin urgencia.</p>
+            <input type="text" id="flow-deliverable" placeholder="¿En qué profundizarás?" autocomplete="off">
+            <select id="flow-time">
+                <option value="40">40 Minutos</option>
+                <option value="50" selected>50 Minutos</option>
+                <option value="60">60 Minutos</option>
+            </select>
+            <button class="btn btn-flow" style="background:var(--flow-primary); color:white;" onclick="startSession('flow')">ENTRAR EN ZONA</button>
+            <button class="btn btn-cancel" onclick="goHome()">Cancelar</button>
+        </div>
+
+        <!-- SETUP REUNIÓN -->
+        <div id="setup-multi" class="screen setup-screen">
+            <h2 class="setup-title" style="color:var(--multi-primary)">Modo Reunión</h2>
+            <p class="setup-hint">Gestiona juntas con timer y registro de atención. Registra distracciones y aportes para ver tu patrón de participación al terminar.</p>
+            <input type="text" id="multi-name" placeholder="Nombre de la junta" autocomplete="off">
+            <select id="multi-time">
+                <option value="15">15 Minutos</option>
+                <option value="30" selected>30 Minutos</option>
+                <option value="45">45 Minutos</option>
+                <option value="60">60 Minutos</option>
+                <option value="90">90 Minutos</option>
+            </select>
+            <select id="multi-level">
+                <option value="hi">Enfoque Total (Tolerancia Cero)</option>
+                <option value="low">Multitask Bajo (Básico)</option>
+                <option value="allowed">Multitask Permitido (Abierto)</option>
+            </select>
+            <button class="btn" style="background:var(--multi-primary); color:white" onclick="startMultitask()">INICIAR SESIÓN</button>
+            <button class="btn btn-cancel" onclick="goHome()">Cancelar</button>
+        </div>
+
+        <!-- TIMER RUSH/FLOW -->
+        <div id="screen-timer" class="screen">
+            <div id="deliverable-display" class="deliverable-display"></div>
+            <div id="timer-display" class="timer-display">00:00</div>
+            <button class="distraction-btn-single" onclick="trackSingleDistraction()">
+                <span class="dist-badge" id="single-dist-count">0</span>
+                <span>Distracción</span>
+            </button>
+            <div id="urgent-msg" class="urgent-msg"></div>
+            <div class="controls">
+                <button class="btn btn-stop" onclick="stopSession()">Finalizar</button>
+            </div>
+        </div>
+
+        <!-- TIMER REUNIÓN -->
+        <div id="screen-multi-active" class="screen">
+            <div id="focus-warning" class="focus-warning">⚠️ ¡Recuerda: Enfoque Total!</div>
+            <div id="multi-header" class="multi-header">Nombre de Junta</div>
+            <div id="multi-level-display" class="multi-level-label">Enfoque Total</div>
+            <div id="multi-timer" class="multi-timer">00:00</div>
+            <div class="tracker-grid">
+                <button class="track-btn track-dist" onclick="trackEvent('dist')">
+                    <span class="track-count" id="count-dist">0</span>
+                    <span class="track-label">Distracción</span>
+                </button>
+                <button class="track-btn track-prod" onclick="trackEvent('prod')">
+                    <span class="track-count" id="count-prod">0</span>
+                    <span class="track-label">Aporte</span>
+                </button>
+            </div>
+            <div class="controls">
+                <button class="btn btn-stop" onclick="finishSession()">Terminar Junta</button>
+            </div>
+        </div>
+
+        <!-- DEBRIEF -->
+        <div id="screen-debrief" class="screen">
+            <div id="debrief-interaction">
+                <div class="debrief-q">¿Lo lograste?</div>
+                <div style="display:flex; gap:12px; justify-content:center; width:100%;">
+                    <button class="btn btn-action" onclick="showDebriefResult(true)">SÍ / AVANCÉ</button>
+                    <button class="btn btn-neg" onclick="showDebriefResult(false)">NO / PARCIAL</button>
+                </div>
+            </div>
+            <div id="debrief-result" style="display:none; width:100%;">
+                <div class="debrief-msg" id="final-msg"></div>
+                <div class="cool-down-card" id="card-cooldown">
+                    <div class="cool-down-title">Protocolo de Enfriamiento</div>
+                    <div class="cool-down-text" id="cool-down-text"></div>
+                </div>
+                <div class="stats-card" id="card-stats">
+                    <div class="stats-title">Resumen de Atención</div>
+                    <div class="stats-text" id="stats-text"></div>
+                </div>
+                <button class="btn btn-new" style="display:flex" onclick="goHome()">NUEVA MISIÓN</button>
+            </div>
+        </div>
+
+        <!-- HISTORIAL -->
+        <div id="screen-history" class="screen">
+            <div class="history-header">
+                <h2>Historial</h2>
+                <button class="btn-back" onclick="navTo('screen-home')">← Inicio</button>
+            </div>
+            <div class="history-summary">
+                <div class="summary-card">
+                    <span class="summary-num" id="sum-sessions">0</span>
+                    <span class="summary-label">Sesiones</span>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-num" id="sum-minutes">0</span>
+                    <span class="summary-label">Min. Enfoque</span>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-num" id="sum-dist">0</span>
+                    <span class="summary-label">Distracciones</span>
+                </div>
+            </div>
+            <div class="history-list" id="history-list"></div>
+            <button class="btn-clear-history" onclick="clearHistory()">Borrar Historial</button>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+        <a href="https://javierwarrior.com" class="footer-link">javierwarrior.com</a>
+        <span class="footer-sep">·</span>
+        <a href="https://javierwarrior.hashnode.dev" class="footer-link">Blog</a>
+    </footer>
+
+    <script>
+        let audioCtx, mainGain;
+        let oscillatorNodes = [];
+        let timerInterval;
+        let currentMode = '';
+        let totalTimeSec = 0;
+        let remainingSec = 0;
+        let isUrgent = false;
+        let wakeLock = null;
+        let multiName = "", multiLevel = "allowed";
+        let countDist = 0, countProd = 0;
+        let singleDistCount = 0;
+        let pendingEntry = null;
+
+        const HISTORY_KEY = 'impulso_productivo_history';
+        const HISTORY_MAX = 50;
+
+        function loadHistory() {
+            try { const raw = localStorage.getItem(HISTORY_KEY); return raw ? JSON.parse(raw) : []; }
+            catch(e) { return []; }
+        }
+        function saveHistoryEntry(entry) {
+            try {
+                const list = loadHistory();
+                list.unshift(entry);
+                if (list.length > HISTORY_MAX) list.length = HISTORY_MAX;
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+            } catch(e) {}
+        }
+        function clearHistory() {
+            if (!confirm('¿Borrar todo el historial? Esta acción no se puede deshacer.')) return;
+            try { localStorage.removeItem(HISTORY_KEY); } catch(e) {}
+            renderHistory();
+        }
+        function openHistory() { renderHistory(); navTo('screen-history'); }
+
+        function fmtDate(iso) {
+            const d = new Date(iso), today = new Date();
+            const isToday = d.toDateString() === today.toDateString();
+            const time = d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+            if (isToday) return `Hoy, ${time}`;
+            return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' }) + `, ${time}`;
+        }
+
+        function renderHistory() {
+            const list = loadHistory();
+            const container = document.getElementById('history-list');
+            let totalMin = 0, totalDist = 0;
+            list.forEach(e => { if (e.mode !== 'multi') totalMin += e.durationMin; totalDist += e.distractions || 0; });
+            document.getElementById('sum-sessions').innerText = list.length;
+            document.getElementById('sum-minutes').innerText = totalMin;
+            document.getElementById('sum-dist').innerText = totalDist;
+            if (list.length === 0) {
+                container.innerHTML = '<div class="history-empty">Aún no hay sesiones registradas.<br>Completa una misión para verla aquí.</div>';
+                return;
+            }
+            container.innerHTML = list.map(e => {
+                const tagClass = `tag-${e.mode}`;
+                const tagText = e.mode === 'rush' ? 'Rush' : (e.mode === 'flow' ? 'Flow' : 'Reunión');
+                let metaParts = [`${e.durationMin} min`];
+                if (e.mode === 'multi') {
+                    metaParts.push(`${e.distractions} distrac.`, `${e.productivity} aportes`);
+                } else {
+                    metaParts.push(e.achieved ? '✅ Lograste avanzar' : '⚠️ Avance parcial');
+                    if (e.distractions > 0) metaParts.push(`${e.distractions} distrac.`);
+                }
+                return `<div class="history-item mode-${e.mode}">
+                    <div class="history-row-top">
+                        <span class="history-label">${escapeHtml(e.label)}</span>
+                        <span class="history-date">${fmtDate(e.date)}</span>
+                    </div>
+                    <div class="history-meta">
+                        <span class="history-tag ${tagClass}">${tagText}</span>${metaParts.join(' · ')}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.innerText = str;
+            return div.innerHTML;
+        }
+
+        const urgentMessages = [
+            "¡Cero dudas, pura acción! Entrega ese [DEL].",
+            "La perfección es el enemigo. ¡Sigue con [DEL]!",
+            "¡Rápido! No pienses, ejecuta: [DEL].",
+            "Tu tiempo se agota. ¡Cierra [DEL] ya!",
+            "Escribe borrador si hace falta, pero termina [DEL].",
+            "¡Foco total! El reloj no para, tu [DEL] tampoco."
+        ];
+
+        const coolDowns = [
+            "👀 <strong>Visión Panorámica:</strong> Mira al horizonte. Suaviza tu mirada.",
+            "🌬️ <strong>Suspiro Fisiológico:</strong> Inhala doble por nariz, exhala lento por boca (x5).",
+            "🧊 <strong>Agua Fría:</strong> Lávate la cara o muñecas con agua fría.",
+            "⬜ <strong>Respiración Cuadrada:</strong> Inhala 4s, sostén 4s, exhala 4s, espera 4s.",
+            "🚶 <strong>Micro-Caminata:</strong> Camina 2 minutos sin teléfono."
+        ];
+
+        function navTo(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function goHome() {
+            document.getElementById('rush-deliverable').value = "";
+            document.getElementById('flow-deliverable').value = "";
+            document.getElementById('multi-name').value = "";
+            document.getElementById('debrief-interaction').style.display = "block";
+            document.getElementById('debrief-result').style.display = "none";
+            document.getElementById('card-cooldown').style.display = "none";
+            document.getElementById('card-stats').style.display = "none";
+            cleanup();
+            navTo('screen-home');
+        }
+
+        function initAudio() {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AC();
+            mainGain = audioCtx.createGain();
+            mainGain.connect(audioCtx.destination);
+        }
+
+        function playRushAudio() {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth'; osc.frequency.value = 50;
+            const lfo = audioCtx.createOscillator();
+            lfo.type = 'square'; lfo.frequency.value = 2.33;
+            const lfoGain = audioCtx.createGain(); lfoGain.gain.value = 0.5;
+            lfo.connect(lfoGain.gain);
+            osc.connect(gain); gain.connect(mainGain);
+            osc.start(); lfo.start();
+            oscillatorNodes.push(osc, lfo);
+            mainGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        }
+
+        function playFlowAudio() {
+            const bufferSize = 4096;
+            const brownNoise = audioCtx.createScriptProcessor(bufferSize, 1, 1);
+            brownNoise.onaudioprocess = function(e) {
+                const output = e.outputBuffer.getChannelData(0);
+                let lastOut = 0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    output[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = output[i]; output[i] *= 3.5;
+                }
+            };
+            const gain = audioCtx.createGain(); gain.gain.value = 0.3;
+            brownNoise.connect(gain); gain.connect(mainGain);
+            oscillatorNodes.push(brownNoise);
+        }
+
+        function playZenBell() {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.value = 440; osc.type = 'sine';
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+            osc.stop(audioCtx.currentTime + 3);
+        }
+
+        async function startSession(mode) {
+            if (!audioCtx) initAudio();
+            if (audioCtx.state === 'suspended') await audioCtx.resume();
+            try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch(e){}
+
+            currentMode = mode;
+            let durationMin, deliverableText = "";
+            singleDistCount = 0;
+            document.getElementById('single-dist-count').innerText = "0";
+
+            if (mode === 'rush') {
+                const input = document.getElementById('rush-deliverable');
+                if (!input.value.trim()) { input.style.borderColor = "var(--rush-primary)"; setTimeout(() => input.style.borderColor = "var(--border)", 1000); return; }
+                deliverableText = input.value;
+                durationMin = parseInt(document.getElementById('rush-time').value);
+                document.body.classList.add('mode-rush');
+                playRushAudio();
+            } else {
+                const input = document.getElementById('flow-deliverable');
+                if (!input.value.trim()) { input.style.borderColor = "var(--flow-primary)"; setTimeout(() => input.style.borderColor = "var(--border)", 1000); return; }
+                deliverableText = input.value;
+                durationMin = parseInt(document.getElementById('flow-time').value);
+                document.body.classList.add('mode-flow');
+                playFlowAudio();
+            }
+
+            totalTimeSec = durationMin * 60; remainingSec = totalTimeSec;
+            document.getElementById('deliverable-display').innerText = deliverableText;
+            document.getElementById('urgent-msg').style.display = 'none';
+            document.getElementById('screen-timer').classList.remove('urgent-bg');
+            isUrgent = false;
+            navTo('screen-timer');
+            runTimer(deliverableText);
+        }
+
+        async function startMultitask() {
+            if (!audioCtx) initAudio();
+            if (audioCtx.state === 'suspended') await audioCtx.resume();
+            try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch(e){}
+
+            const nameInput = document.getElementById('multi-name');
+            if (!nameInput.value.trim()) { nameInput.style.borderColor = "var(--multi-primary)"; setTimeout(() => nameInput.style.borderColor = "var(--border)", 1000); return; }
+
+            currentMode = 'multi';
+            multiName = nameInput.value;
+            multiLevel = document.getElementById('multi-level').value;
+            let durationMin = parseInt(document.getElementById('multi-time').value);
+            countDist = 0; countProd = 0;
+            document.getElementById('count-dist').innerText = "0";
+            document.getElementById('count-prod').innerText = "0";
+            document.body.classList.add('mode-multi');
+            document.getElementById('multi-header').innerText = multiName;
+            let labelText = multiLevel === 'hi' ? "ENFOQUE TOTAL" : (multiLevel === 'low' ? "MULTITASK BAJO" : "MULTITASK PERMITIDO");
+            document.getElementById('multi-level-display').innerText = labelText;
+            totalTimeSec = durationMin * 60; remainingSec = totalTimeSec;
+            navTo('screen-multi-active');
+            runTimer(multiName);
+        }
+
+        function trackEvent(type) {
+            if (multiLevel === 'hi') {
+                const warning = document.getElementById('focus-warning');
+                warning.style.display = 'block';
+                setTimeout(() => warning.style.display = 'none', 2000);
+            }
+            if (type === 'dist') { countDist++; document.getElementById('count-dist').innerText = countDist; }
+            else { countProd++; document.getElementById('count-prod').innerText = countProd; }
+        }
+
+        function trackSingleDistraction() {
+            singleDistCount++;
+            document.getElementById('single-dist-count').innerText = singleDistCount;
+        }
+
+        function runTimer(deliverable) {
+            const endTime = Date.now() + (totalTimeSec * 1000);
+            function frame() {
+                const diff = endTime - Date.now();
+                if (diff <= 0) { finishSession(); return; }
+                remainingSec = diff / 1000;
+                const min = Math.floor(diff / 60000);
+                const sec = Math.floor((diff % 60000) / 1000);
+                const ms = Math.floor((diff % 1000) / 10);
+                if (currentMode === 'rush') {
+                    document.getElementById('timer-display').innerText = `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}:${String(ms).padStart(2,'0')}`;
+                } else if (currentMode === 'multi') {
+                    document.getElementById('multi-timer').innerText = `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+                } else {
+                    document.getElementById('timer-display').innerText = `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+                }
+                if (currentMode === 'rush' && remainingSec <= (totalTimeSec * 0.2)) {
+                    if (!isUrgent) { isUrgent = true; document.getElementById('screen-timer').classList.add('urgent-bg'); document.getElementById('urgent-msg').style.display = 'block'; triggerRandomMessage(deliverable); }
+                }
+                if (currentMode !== 'multi' && remainingSec <= 10 && remainingSec > 9.8) {
+                    mainGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 10);
+                }
+                timerInterval = requestAnimationFrame(frame);
+            }
+            timerInterval = requestAnimationFrame(frame);
+        }
+
+        function triggerRandomMessage(deliverable) {
+            const msgEl = document.getElementById('urgent-msg');
+            const showMsg = () => {
+                if (remainingSec <= 0) return;
+                msgEl.innerText = urgentMessages[Math.floor(Math.random() * urgentMessages.length)].replace('[DEL]', deliverable);
+                setTimeout(showMsg, 4000);
+            };
+            showMsg();
+        }
+
+        function stopSession() { if (timerInterval) cancelAnimationFrame(timerInterval); goHome(); }
+
+        function finishSession() {
+            if (timerInterval) cancelAnimationFrame(timerInterval);
+            cleanup(); playZenBell();
+            if (wakeLock) wakeLock.release();
+
+            if (currentMode === 'multi') {
+                document.getElementById('debrief-interaction').style.display = 'none';
+                document.getElementById('debrief-result').style.display = 'block';
+                document.getElementById('final-msg').innerText = "Lo vital es la acción y el foco. Bien hecho.";
+                document.getElementById('final-msg').style.display = 'block';
+                const cardStats = document.getElementById('card-stats');
+                cardStats.style.display = 'block';
+                document.getElementById('stats-text').innerHTML =
+                    `Junta: <strong>${multiName}</strong><br>` +
+                    `Nivel: ${multiLevel.toUpperCase()}<br><br>` +
+                    `<span style="color:var(--rush-primary); font-weight:700">Distracciones: ${countDist}</span><br>` +
+                    `<span style="color:var(--flow-primary); font-weight:700">Aportes: ${countProd}</span>`;
+                saveHistoryEntry({ mode: 'multi', label: multiName, durationMin: Math.round(totalTimeSec/60), date: new Date().toISOString(), distractions: countDist, productivity: countProd, multiLevel });
+            } else {
+                document.getElementById('debrief-interaction').style.display = 'block';
+                document.getElementById('debrief-result').style.display = 'none';
+                if (singleDistCount > 0) {
+                    document.getElementById('final-msg').innerText = `Sesión finalizada. Registraste ${singleDistCount} distracciones liberadas. Bien hecho recuperando el foco.`;
+                }
+                pendingEntry = { mode: currentMode, label: document.getElementById('deliverable-display').innerText, durationMin: Math.round(totalTimeSec/60), date: new Date().toISOString(), distractions: singleDistCount };
+            }
+            document.body.classList.remove('mode-rush', 'mode-flow', 'mode-multi');
+            navTo('screen-debrief');
+        }
+
+        function showDebriefResult(achieved) {
+            document.getElementById('debrief-interaction').style.display = 'none';
+            document.getElementById('debrief-result').style.display = 'block';
+            document.getElementById('final-msg').style.display = 'block';
+            const cardCool = document.getElementById('card-cooldown');
+            cardCool.style.display = 'block';
+            document.getElementById('cool-down-text').innerHTML = coolDowns[Math.floor(Math.random() * coolDowns.length)];
+            if (singleDistCount > 0) {
+                document.getElementById('card-stats').style.display = 'block';
+                document.getElementById('stats-text').innerHTML = `Distracciones liberadas: <strong>${singleDistCount}</strong>`;
+            }
+            if (pendingEntry) { pendingEntry.achieved = !!achieved; saveHistoryEntry(pendingEntry); pendingEntry = null; }
+        }
+
+        function cleanup() {
+            oscillatorNodes.forEach(node => { try { node.disconnect(); node.stop(); } catch(e){} });
+            oscillatorNodes = [];
+            document.body.classList.remove('mode-rush', 'mode-flow', 'mode-multi');
+        }
+    </script>
+</body>
+</html>
