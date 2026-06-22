@@ -160,6 +160,67 @@
 
         /* DEBRIEF */
         #screen-debrief { background-color: white; text-align: center; padding: 32px; }
+
+        /* HISTORIAL */
+        .btn-history-link {
+            border: none; background: none; color: var(--text-sub);
+            font-size: 0.9rem; font-weight: 600; margin-top: 28px;
+            padding: 8px 16px; cursor: pointer; text-transform: none;
+            letter-spacing: normal;
+        }
+        #screen-history {
+            background-color: var(--bg-app); align-items: stretch;
+            padding: 24px 20px 16px;
+        }
+        .history-header {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; max-width: 420px; margin: 0 auto 16px;
+        }
+        .history-header h2 { margin: 0; font-size: 1.4rem; color: #111827; }
+        .btn-back {
+            border: none; background: none; color: var(--text-sub);
+            font-size: 0.95rem; font-weight: 600; cursor: pointer; padding: 8px;
+        }
+        .history-summary {
+            display: flex; gap: 10px; width: 100%; max-width: 420px;
+            margin: 0 auto 16px;
+        }
+        .summary-card {
+            flex: 1; background: var(--card-bg); border-radius: var(--radius-main);
+            box-shadow: var(--shadow-soft); padding: 14px 8px; text-align: center;
+        }
+        .summary-num { font-size: 1.4rem; font-weight: 800; color: #111827; display: block; }
+        .summary-label { font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.3px; }
+        .history-list {
+            width: 100%; max-width: 420px; margin: 0 auto; flex: 1;
+            overflow-y: auto; -webkit-overflow-scrolling: touch;
+        }
+        .history-empty {
+            text-align: center; color: var(--text-sub); margin-top: 60px; font-size: 0.95rem;
+        }
+        .history-item {
+            background: var(--card-bg); border-radius: 14px; box-shadow: var(--shadow-soft);
+            padding: 14px 16px; margin-bottom: 10px; border-left: 4px solid #ccc;
+        }
+        .history-item.mode-rush { border-left-color: var(--rush-primary); }
+        .history-item.mode-flow { border-left-color: var(--flow-primary); }
+        .history-item.mode-multi { border-left-color: var(--multi-primary); }
+        .history-row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+        .history-label { font-weight: 700; color: #111827; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .history-date { font-size: 0.72rem; color: var(--text-sub); white-space: nowrap; }
+        .history-meta { font-size: 0.8rem; color: var(--text-sub); margin-top: 4px; }
+        .history-tag {
+            display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 7px;
+            border-radius: 6px; margin-right: 6px; text-transform: uppercase;
+        }
+        .tag-rush { background: var(--rush-bg); color: var(--rush-primary); }
+        .tag-flow { background: var(--flow-bg); color: var(--flow-primary); }
+        .tag-multi { background: var(--multi-bg); color: var(--multi-primary); }
+        .btn-clear-history {
+            border: none; background: none; color: var(--rush-primary);
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            padding: 14px; margin: 4px auto 0; text-transform: none;
+        }
         .debrief-q { font-size: 2rem; margin-bottom: 40px; font-weight: 800; }
         .debrief-msg { font-size: 1.3rem; margin: 24px 0; color: var(--flow-primary); font-weight: 600; display: none; animation: fadeIn 0.6s; }
         
@@ -200,6 +261,8 @@
 
         <button class="btn btn-multi" onclick="navTo('setup-multi')">MODO REUNIÓN</button>
         <p class="desc">Gestión de Juntas y Control.</p>
+
+        <button class="btn-history-link" onclick="openHistory()">📊 Ver Historial</button>
     </div>
 
     <div id="setup-rush" class="screen setup-screen">
@@ -286,8 +349,8 @@
         <div id="debrief-interaction">
             <div class="debrief-q">¿Lo lograste?</div>
             <div style="display:flex; gap:12px; justify-content:center; width:100%;">
-                <button class="btn btn-action" onclick="showDebriefResult()">SÍ / AVANCÉ</button>
-                <button class="btn btn-neg" onclick="showDebriefResult()">NO / PARCIAL</button>
+                <button class="btn btn-action" onclick="showDebriefResult(true)">SÍ / AVANCÉ</button>
+                <button class="btn btn-neg" onclick="showDebriefResult(false)">NO / PARCIAL</button>
             </div>
         </div>
 
@@ -306,6 +369,29 @@
 
             <button class="btn btn-new" style="display:flex" onclick="goHome()">NUEVA MISIÓN</button>
         </div>
+    </div>
+
+    <div id="screen-history" class="screen">
+        <div class="history-header">
+            <h2>Historial</h2>
+            <button class="btn-back" onclick="navTo('screen-home')">← Inicio</button>
+        </div>
+        <div class="history-summary">
+            <div class="summary-card">
+                <span class="summary-num" id="sum-sessions">0</span>
+                <span class="summary-label">Sesiones</span>
+            </div>
+            <div class="summary-card">
+                <span class="summary-num" id="sum-minutes">0</span>
+                <span class="summary-label">Min. Enfoque</span>
+            </div>
+            <div class="summary-card">
+                <span class="summary-num" id="sum-dist">0</span>
+                <span class="summary-label">Distracc. Liberadas</span>
+            </div>
+        </div>
+        <div class="history-list" id="history-list"></div>
+        <button class="btn-clear-history" onclick="clearHistory()">Borrar Historial</button>
     </div>
 
     <script>
@@ -328,6 +414,98 @@
         let countDist = 0; 
         let countProd = 0; 
         let singleDistCount = 0; // Para Rush/Flow
+        let pendingEntry = null; // Sesión Rush/Flow en espera del debrief
+
+        // --- HISTORIAL (localStorage) ---
+        const HISTORY_KEY = 'impulso_productivo_history';
+        const HISTORY_MAX = 50;
+
+        function loadHistory() {
+            try {
+                const raw = localStorage.getItem(HISTORY_KEY);
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveHistoryEntry(entry) {
+            try {
+                const list = loadHistory();
+                list.unshift(entry);
+                if (list.length > HISTORY_MAX) list.length = HISTORY_MAX;
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+            } catch (e) { /* almacenamiento no disponible */ }
+        }
+
+        function clearHistory() {
+            if (!confirm('¿Borrar todo el historial de sesiones? Esta acción no se puede deshacer.')) return;
+            try { localStorage.removeItem(HISTORY_KEY); } catch (e) {}
+            renderHistory();
+        }
+
+        function openHistory() {
+            renderHistory();
+            navTo('screen-history');
+        }
+
+        function fmtDate(iso) {
+            const d = new Date(iso);
+            const today = new Date();
+            const isToday = d.toDateString() === today.toDateString();
+            const time = d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+            if (isToday) return `Hoy, ${time}`;
+            return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' }) + `, ${time}`;
+        }
+
+        function renderHistory() {
+            const list = loadHistory();
+            const container = document.getElementById('history-list');
+
+            let totalMin = 0, totalDist = 0;
+            list.forEach(e => {
+                if (e.mode !== 'multi') totalMin += e.durationMin;
+                totalDist += e.distractions || 0;
+            });
+            document.getElementById('sum-sessions').innerText = list.length;
+            document.getElementById('sum-minutes').innerText = totalMin;
+            document.getElementById('sum-dist').innerText = totalDist;
+
+            if (list.length === 0) {
+                container.innerHTML = '<div class="history-empty">Aún no hay sesiones registradas.<br>Completa una misión para verla aquí.</div>';
+                return;
+            }
+
+            container.innerHTML = list.map(e => {
+                const tagClass = `tag-${e.mode}`;
+                const itemClass = `mode-${e.mode}`;
+                const tagText = e.mode === 'rush' ? 'Rush' : (e.mode === 'flow' ? 'Flow' : 'Reunión');
+                let metaParts = [`${e.durationMin} min`];
+
+                if (e.mode === 'multi') {
+                    metaParts.push(`${e.distractions} distrac.`, `${e.productivity} aportes`);
+                } else {
+                    metaParts.push(e.achieved ? '✅ Lograste avanzar' : '⚠️ Avance parcial');
+                    if (e.distractions > 0) metaParts.push(`${e.distractions} distrac. liberadas`);
+                }
+
+                return `<div class="history-item ${itemClass}">
+                    <div class="history-row-top">
+                        <span class="history-label">${escapeHtml(e.label)}</span>
+                        <span class="history-date">${fmtDate(e.date)}</span>
+                    </div>
+                    <div class="history-meta">
+                        <span class="history-tag ${tagClass}">${tagText}</span>${metaParts.join(' · ')}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.innerText = str;
+            return div.innerHTML;
+        }
 
         // --- MENSAJES ---
         const urgentMessages = [
@@ -624,6 +802,16 @@
                     `<span style="color:var(--rush-primary); font-weight:600">Distracciones: ${countDist}</span><br>` +
                     `<span style="color:var(--flow-primary); font-weight:600">Aportes: ${countProd}</span>`;
                 document.getElementById('card-cooldown').style.display = 'none';
+
+                saveHistoryEntry({
+                    mode: 'multi',
+                    label: multiName,
+                    durationMin: Math.round(totalTimeSec / 60),
+                    date: new Date().toISOString(),
+                    distractions: countDist,
+                    productivity: countProd,
+                    multiLevel: multiLevel
+                });
             } else {
                 // Modo Rush/Flow
                 document.getElementById('debrief-interaction').style.display = 'block';
@@ -633,13 +821,21 @@
                 if(singleDistCount > 0) {
                      document.getElementById('final-msg').innerText = `Sesión finalizada. Registraste ${singleDistCount} distracciones liberadas. Bien hecho recuperando el foco.`;
                 }
+
+                pendingEntry = {
+                    mode: currentMode,
+                    label: document.getElementById('deliverable-display').innerText,
+                    durationMin: Math.round(totalTimeSec / 60),
+                    date: new Date().toISOString(),
+                    distractions: singleDistCount
+                };
             }
 
             document.body.classList.remove('mode-rush', 'mode-flow', 'mode-multi');
             navTo('screen-debrief');
         }
 
-        function showDebriefResult() {
+        function showDebriefResult(achieved) {
             document.getElementById('debrief-interaction').style.display = 'none';
             document.getElementById('debrief-result').style.display = 'block';
             
@@ -653,6 +849,12 @@
                  const cardStats = document.getElementById('card-stats');
                  cardStats.style.display = 'block';
                  document.getElementById('stats-text').innerHTML = `Distracciones liberadas: <strong>${singleDistCount}</strong>`;
+            }
+
+            if (pendingEntry) {
+                pendingEntry.achieved = !!achieved;
+                saveHistoryEntry(pendingEntry);
+                pendingEntry = null;
             }
         }
         
