@@ -1,868 +1,237 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Impulso Productivo</title>
-    <style>
-        :root {
-            /* --- CALM PALETTE --- */
-            --bg-app: #F9FAFB;
-            --text-main: #374151;
-            --text-sub: #6B7280;
-            --card-bg: #FFFFFF;
-            
-            /* MODOS */
-            --rush-primary: #E11D48;
-            --rush-bg: #FFF1F2;
-            --flow-primary: #059669;
-            --flow-bg: #ECFDF5;
-            --multi-primary: #7C3AED;
-            --multi-bg: #F5F3FF;
-            
-            /* UI */
-            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --radius-main: 16px;
-            --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Javier Warrior — Psicología aplicada y neurociencia accesible</title>
+<meta name="description" content="Divulgación honesta sobre cómo funciona tu mente y herramientas prácticas para que funcione mejor, hoy mismo. Sin misticismo, sin promesas exageradas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --dark: #0f172a;
+    --gold: #c5a059;
+    --cream: #fdfbf7;
+    --cream-dark: #f1ede4;
+    --text: #1e293b;
+    --text-soft: #475569;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+  }
+  body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--text); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
 
-        * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
-        
-        body, html {
-            margin: 0; padding: 0; height: 100%; width: 100%;
-            overflow: hidden;
-            font-family: var(--font-ui);
-            background-color: var(--bg-app);
-            color: var(--text-main);
-            transition: background-color 0.5s ease;
-        }
+  /* NAV */
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; border-bottom: 1px solid var(--border); background: rgba(253,251,247,0.97); position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; color: var(--dark); text-decoration: none; letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.78rem; color: var(--text-soft); text-decoration: none; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
 
-        /* LAYOUT */
-        .screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 24px;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-            z-index: 1;
-        }
-        .screen.active { opacity: 1; pointer-events: all; z-index: 10; }
-        
-        /* BOTONES GLOBALES */
-        .btn {
-            padding: 16px 24px; border: none; border-radius: var(--radius-main);
-            font-size: 1rem; font-weight: 600; cursor: pointer;
-            margin: 12px 0; width: 100%; max-width: 340px;
-            box-shadow: var(--shadow-soft);
-            transition: all 0.2s ease;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .btn:active { transform: scale(0.98); box-shadow: none; }
+  /* HERO */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 88vh; max-width: 1200px; margin: 0 auto; padding: 0 2rem; align-items: center; gap: 4rem; }
+  .hero-eyebrow { font-size: 0.72rem; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+  .hero-eyebrow::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--gold); }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 4.5vw, 3.5rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; color: var(--dark); margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 1rem; color: var(--text-soft); max-width: 420px; margin-bottom: 2.5rem; line-height: 1.8; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .btn-primary { background: var(--dark); color: var(--cream); padding: 0.8rem 1.75rem; border-radius: 4px; text-decoration: none; font-size: 0.78rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--gold); color: var(--dark); }
+  .btn-ghost { color: var(--text-soft); text-decoration: none; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+  .btn-ghost:hover { color: var(--gold); }
+  .btn-ghost::after { content: '→'; }
+  .hero-visual { display: flex; justify-content: center; }
+  .photo-frame { width: 340px; height: 420px; background: var(--cream-dark); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; position: relative; }
+  .photo-frame::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: var(--gold); }
+  .photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 
-        input, select {
-            width: 100%; max-width: 340px; padding: 16px; margin-bottom: 24px;
-            font-size: 1.1rem; border-radius: var(--radius-main); 
-            border: 1px solid #E5E7EB;
-            background: var(--card-bg); color: var(--text-main);
-            outline: none; box-shadow: var(--shadow-soft);
-            font-family: var(--font-ui);
-        }
-        input:focus { border-color: var(--flow-primary); }
+  /* FRASE */
+  .frase-section { background: var(--dark); padding: 5rem 2rem; text-align: center; position: relative; }
+  .frase-section::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 3px; background: var(--gold); }
+  .frase-section blockquote { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.6rem, 3.5vw, 2.6rem); color: var(--cream); letter-spacing: -0.01em; line-height: 1.3; max-width: 700px; margin: 0 auto 1.25rem; font-weight: 500; }
+  .frase-section cite { font-size: 0.72rem; color: var(--gold); font-style: normal; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; }
 
-        /* HOME */
-        #screen-home { background-color: var(--bg-app); }
-        .hero-title { font-size: 2.2rem; margin-bottom: 8px; font-weight: 800; color: #111827; letter-spacing: -0.05em; }
-        .hero-sub { color: var(--text-sub); margin-bottom: 48px; font-size: 1rem; }
-        
-        .btn-rush { background: var(--rush-primary); color: white; }
-        .btn-flow { background: var(--card-bg); color: var(--flow-primary); border: 2px solid var(--flow-primary); }
-        .btn-multi { background: var(--card-bg); color: var(--multi-primary); border: 2px solid var(--multi-primary); margin-top: 32px; }
-        .desc { font-size: 0.85rem; margin-top: -8px; margin-bottom: 20px; color: var(--text-sub); font-weight: 500; }
+  /* SOBRE */
+  .sobre { max-width: 1200px; margin: 0 auto; padding: 6rem 2rem; display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start; }
+  .section-label { font-size: 0.72rem; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 2rem; line-height: 1.15; letter-spacing: -0.02em; color: var(--dark); font-weight: 600; }
+  .sobre-content p { color: var(--text-soft); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.8; }
+  .postura-inline { color: var(--text-soft) !important; font-style: italic; font-size: 0.95rem !important; border-left: 3px solid var(--gold); padding-left: 1.25rem !important; margin-top: 1.5rem; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+  .tag { font-size: 0.72rem; font-weight: 900; color: var(--dark); background: rgba(197,160,89,0.15); padding: 0.35rem 0.9rem; border-radius: 2px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid rgba(197,160,89,0.3); }
 
-        /* SETUP SCREENS */
-        .setup-screen { background: var(--bg-app); }
-        .setup-title { font-size: 1.8rem; margin-bottom: 32px; font-weight: 700; }
-        .btn-cancel { background: transparent; color: var(--text-sub); box-shadow: none; font-weight: normal; text-transform: none; }
+  /* APPS */
+  .apps-section { background: var(--dark); padding: 6rem 2rem; }
+  .apps-inner { max-width: 1200px; margin: 0 auto; }
+  .apps-header { margin-bottom: 3rem; }
+  .apps-header .section-label { color: var(--gold); }
+  .apps-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.02em; line-height: 1.15; color: var(--cream); font-weight: 600; }
+  .apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .app-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(197,160,89,0.2); border-radius: 4px; padding: 2rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.2s, background 0.2s; }
+  .app-card:hover { border-color: var(--gold); background: rgba(197,160,89,0.06); }
+  .app-icon { width: 44px; height: 44px; background: rgba(197,160,89,0.15); border: 1px solid rgba(197,160,89,0.3); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .app-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--cream); letter-spacing: -0.01em; font-weight: 500; }
+  .app-desc { font-size: 0.88rem; color: rgba(253,251,247,0.55); line-height: 1.7; flex: 1; }
+  .app-cta { font-size: 0.72rem; font-weight: 900; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 0.3rem; }
+  .app-cta::after { content: '→'; }
 
-        /* TIMER SCREEN (RUSH & FLOW) */
-        #screen-timer { text-align: center; transition: background 0.5s; }
-        
-        /* Estilos Dinámicos Rush/Flow */
-        body.mode-rush #screen-timer { background-color: var(--rush-bg); }
-        body.mode-rush .timer-display { font-size: 4.5rem; font-weight: 800; color: var(--rush-primary); letter-spacing: -2px; font-feature-settings: "tnum"; }
-        body.mode-rush .deliverable-display { font-size: 1.5rem; text-transform: uppercase; color: #881337; font-weight: 700; margin-bottom: 20px; }
-        body.mode-rush .urgent-msg { font-size: 1.25rem; color: #BE123C; font-weight: 700; margin-top: 40px; min-height: 3em; animation: pulse-text 1s infinite; display: none; }
-        
-        body.mode-flow #screen-timer { background-color: var(--flow-bg); }
-        body.mode-flow .timer-display { font-size: 3.5rem; font-weight: 300; color: var(--flow-primary); opacity: 0.8; font-feature-settings: "tnum"; }
-        body.mode-flow .deliverable-display { font-size: 1.3rem; margin-bottom: 30px; font-style: italic; color: #064E3B; }
-        body.mode-flow .urgent-msg { display: none; }
+  /* BLOG */
+  .blog-section { max-width: 1200px; margin: 0 auto; padding: 6rem 2rem; display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start; }
+  .blog-intro { font-size: 0.95rem; color: var(--text-soft); line-height: 1.8; margin-bottom: 2rem; }
+  .temas-lista { list-style: none; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .temas-lista li { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: var(--text-soft); display: flex; align-items: center; gap: 0.75rem; background: var(--cream); }
+  .temas-lista li:last-child { border-bottom: none; }
+  .temas-lista li::before { content: '—'; color: var(--gold); font-weight: 900; flex-shrink: 0; }
 
-        /* BOTÓN DE DISTRACCIÓN (RUSH & FLOW) */
-        .distraction-btn-single {
-            margin-top: 20px;
-            background: transparent;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.1s;
-        }
-        .distraction-btn-single:active { transform: scale(0.95); }
-        .dist-badge {
-            background: rgba(0,0,0,0.1);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
+  /* POSTURA */
+  .no-section { background: var(--cream-dark); padding: 6rem 2rem; border-top: 1px solid var(--border); }
+  .no-inner { max-width: 800px; margin: 0 auto; }
+  .no-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--dark); letter-spacing: -0.02em; margin-bottom: 2rem; line-height: 1.2; font-weight: 600; }
+  .no-lista { list-style: none; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .no-lista li { font-size: 0.95rem; color: var(--text-soft); display: flex; gap: 1rem; align-items: center; padding: 1.1rem 1.5rem; background: white; border-bottom: 1px solid var(--border); }
+  .no-lista li:last-child { border-bottom: none; }
+  .no-lista li::before { content: '✕'; color: var(--gold); font-weight: 900; font-size: 0.8rem; flex-shrink: 0; }
 
-        /* Color adaptativo del botón */
-        body.mode-rush .distraction-btn-single {
-            border: 1px solid var(--rush-primary);
-            color: var(--rush-primary);
-        }
-        body.mode-flow .distraction-btn-single {
-            border: 1px solid var(--flow-primary);
-            color: var(--flow-primary);
-        }
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); letter-spacing: -0.01em; font-weight: 600; }
+  .footer-logo span { color: var(--gold); }
+  .footer-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
-        /* MULTITASK SCREEN */
-        body.mode-multi #screen-multi-active { background-color: var(--multi-bg); }
-        #screen-multi-active { text-align: center; }
-        .multi-timer { font-size: 3rem; margin-bottom: 12px; color: var(--multi-primary); font-weight: 600; font-variant-numeric: tabular-nums; }
-        .multi-header { font-size: 1.5rem; color: #4C1D95; margin-bottom: 4px; font-weight: bold; }
-        .multi-level-label { font-size: 0.85rem; color: #6D28D9; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
-        
-        .tracker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; max-width: 360px; margin-bottom: 30px; }
-        .track-btn { 
-            padding: 24px 12px; border-radius: 20px; border: none; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; transition: transform 0.1s; box-shadow: var(--shadow-soft);
-            background: white;
-        }
-        .track-btn:active { transform: scale(0.96); }
-        .track-dist { color: #E11D48; border: 1px solid #FECDD3; }
-        .track-prod { color: #059669; border: 1px solid #A7F3D0; }
-        .track-count { font-size: 2.5rem; margin-top: 8px; font-weight: 800; }
-        .track-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
-
-        .focus-warning {
-            position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
-            background: #E11D48; color: white; padding: 16px 32px;
-            border-radius: 50px; font-weight: bold; font-size: 1rem;
-            z-index: 100; display: none; box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4);
-            animation: popIn 0.4s; white-space: nowrap;
-        }
-
-        /* DEBRIEF */
-        #screen-debrief { background-color: white; text-align: center; padding: 32px; }
-
-        /* HISTORIAL */
-        .btn-history-link {
-            border: none; background: none; color: var(--text-sub);
-            font-size: 0.9rem; font-weight: 600; margin-top: 28px;
-            padding: 8px 16px; cursor: pointer; text-transform: none;
-            letter-spacing: normal;
-        }
-        #screen-history {
-            background-color: var(--bg-app); align-items: stretch;
-            padding: 24px 20px 16px;
-        }
-        .history-header {
-            display: flex; align-items: center; justify-content: space-between;
-            width: 100%; max-width: 420px; margin: 0 auto 16px;
-        }
-        .history-header h2 { margin: 0; font-size: 1.4rem; color: #111827; }
-        .btn-back {
-            border: none; background: none; color: var(--text-sub);
-            font-size: 0.95rem; font-weight: 600; cursor: pointer; padding: 8px;
-        }
-        .history-summary {
-            display: flex; gap: 10px; width: 100%; max-width: 420px;
-            margin: 0 auto 16px;
-        }
-        .summary-card {
-            flex: 1; background: var(--card-bg); border-radius: var(--radius-main);
-            box-shadow: var(--shadow-soft); padding: 14px 8px; text-align: center;
-        }
-        .summary-num { font-size: 1.4rem; font-weight: 800; color: #111827; display: block; }
-        .summary-label { font-size: 0.7rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.3px; }
-        .history-list {
-            width: 100%; max-width: 420px; margin: 0 auto; flex: 1;
-            overflow-y: auto; -webkit-overflow-scrolling: touch;
-        }
-        .history-empty {
-            text-align: center; color: var(--text-sub); margin-top: 60px; font-size: 0.95rem;
-        }
-        .history-item {
-            background: var(--card-bg); border-radius: 14px; box-shadow: var(--shadow-soft);
-            padding: 14px 16px; margin-bottom: 10px; border-left: 4px solid #ccc;
-        }
-        .history-item.mode-rush { border-left-color: var(--rush-primary); }
-        .history-item.mode-flow { border-left-color: var(--flow-primary); }
-        .history-item.mode-multi { border-left-color: var(--multi-primary); }
-        .history-row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-        .history-label { font-weight: 700; color: #111827; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .history-date { font-size: 0.72rem; color: var(--text-sub); white-space: nowrap; }
-        .history-meta { font-size: 0.8rem; color: var(--text-sub); margin-top: 4px; }
-        .history-tag {
-            display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 7px;
-            border-radius: 6px; margin-right: 6px; text-transform: uppercase;
-        }
-        .tag-rush { background: var(--rush-bg); color: var(--rush-primary); }
-        .tag-flow { background: var(--flow-bg); color: var(--flow-primary); }
-        .tag-multi { background: var(--multi-bg); color: var(--multi-primary); }
-        .btn-clear-history {
-            border: none; background: none; color: var(--rush-primary);
-            font-size: 0.85rem; font-weight: 600; cursor: pointer;
-            padding: 14px; margin: 4px auto 0; text-transform: none;
-        }
-        .debrief-q { font-size: 2rem; margin-bottom: 40px; font-weight: 800; }
-        .debrief-msg { font-size: 1.3rem; margin: 24px 0; color: var(--flow-primary); font-weight: 600; display: none; animation: fadeIn 0.6s; }
-        
-        .cool-down-card, .stats-card { 
-            background: #F9FAFB; padding: 24px; border-radius: 20px; 
-            margin: 24px 0; display: none; text-align: left; animation: slideUp 0.6s ease-out;
-            box-shadow: var(--shadow-soft); border: 1px solid #E5E7EB;
-        }
-        .cool-down-title { color: #0284C7; font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase; }
-        .stats-title { color: var(--multi-primary); font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase; }
-        .cool-down-text, .stats-text { font-size: 1.05rem; color: #4B5563; line-height: 1.6; }
-
-        @keyframes pulse-bg { 0% { background: var(--rush-bg); } 50% { background: #FFE4E6; } 100% { background: var(--rush-bg); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes popIn { from { transform: translate(-50%, 40px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .urgent-bg { animation: pulse-bg 1s infinite; }
-        .controls { position: absolute; bottom: 40px; width: 100%; display: flex; justify-content: center; }
-        .btn-stop { background: white; color: var(--text-main); border: 1px solid #E5E7EB; font-size: 0.9rem; max-width: 180px; }
-        .btn-action { background: var(--flow-primary); color: white; min-width: 140px; }
-        .btn-neg { background: white; color: var(--text-sub); border: 1px solid #E5E7EB; min-width: 140px; }
-        .btn-new { background: #111827; color: white; width: 100%; margin-top: 24px; display: none; box-shadow: var(--shadow-hover); }
-
-    </style>
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; padding: 3rem 1.5rem; gap: 2rem; }
+    .hero-visual { display: none; }
+    .sobre { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem; }
+    .apps-grid { grid-template-columns: 1fr; }
+    .blog-section { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
 </head>
 <body>
 
-    <div id="screen-home" class="screen active">
-        <h1 class="hero-title">Impulso Productivo</h1>
-        <p class="hero-sub">Protocolo de Rendimiento</p>
-        
-        <button class="btn btn-rush" onclick="navTo('setup-rush')">MODO RUSH</button>
-        <p class="desc">Ejecución. Adrenalina. Velocidad.</p>
-        
-        <button class="btn btn-flow" onclick="navTo('setup-flow')">MODO FLOW</button>
-        <p class="desc">Creatividad. Profundidad. Enfoque.</p>
+<nav>
+  <a class="nav-logo" href="#">Javier<span>Warrior</span></a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre mí</a></li>
+    <li><a href="#apps">Herramientas</a></li>
+    <li><a href="#blog">Blog</a></li>
+  </ul>
+</nav>
 
-        <button class="btn btn-multi" onclick="navTo('setup-multi')">MODO REUNIÓN</button>
-        <p class="desc">Gestión de Juntas y Control.</p>
-
-        <button class="btn-history-link" onclick="openHistory()">📊 Ver Historial</button>
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Psicología aplicada · Neurociencia accesible</p>
+    <h1>Entender tu mente<br>es el primer paso<br>para <em>aliviarla</em></h1>
+    <p class="hero-sub">Divulgación honesta sobre cómo funciona tu mente y herramientas prácticas para que funcione mejor, hoy mismo. Sin misticismo, sin promesas exageradas.</p>
+    <div class="hero-cta">
+      <a href="#apps" class="btn-primary">Ver herramientas gratuitas</a>
+      <a href="#sobre" class="btn-ghost">Quién soy</a>
     </div>
-
-    <div id="setup-rush" class="screen setup-screen">
-        <h2 class="setup-title" style="color:var(--rush-primary)">Configurar Rush</h2>
-        <input type="text" id="rush-deliverable" placeholder="¿Cuál es tu Objetivo?" autocomplete="off">
-        <select id="rush-time">
-            <option value="10">10 Minutos</option>
-            <option value="15" selected>15 Minutos</option>
-            <option value="20">20 Minutos</option>
-            <option value="30">30 Minutos</option>
-        </select>
-        <button class="btn btn-rush" onclick="startSession('rush')">INICIAR RUSH</button>
-        <button class="btn btn-cancel" onclick="goHome()">Cancelar</button>
+  </div>
+  <div class="hero-visual">
+    <div class="photo-frame">
+      <img src="profile.png" alt="Javier Guerrero">
     </div>
+  </div>
+</section>
 
-    <div id="setup-flow" class="screen setup-screen">
-        <h2 class="setup-title" style="color:var(--flow-primary)">Configurar Flow</h2>
-        <input type="text" id="flow-deliverable" placeholder="¿En qué profundizarás?" autocomplete="off">
-        <select id="flow-time">
-            <option value="40">40 Minutos</option>
-            <option value="50" selected>50 Minutos</option>
-            <option value="60">60 Minutos</option>
-        </select>
-        <button class="btn btn-flow" style="background:var(--flow-primary); color:white;" onclick="startSession('flow')">ENTRAR EN ZONA</button>
-        <button class="btn btn-cancel" onclick="goHome()">Cancelar</button>
+<div class="frase-section">
+  <blockquote>"Comprender es aliviar."</blockquote>
+  <cite>— Javier Guerrero</cite>
+</div>
+
+<section class="sobre" id="sobre">
+  <div>
+    <p class="section-label">Sobre mí</p>
+    <h2 class="section-title">Ingeniero,<br>psicólogo,<br>curioso crónico</h2>
+  </div>
+  <div class="sobre-content">
+    <p>Pasé 27 años gestionando programas tecnológicos en empresas transnacionales. En algún punto del camino me di cuenta de que la tecnología no era el problema más interesante: lo era la persona que la usa.</p>
+    <p>Estudié Psicología no para convertirme en terapeuta, sino para entender mejor lo que ya vivía: el estrés crónico, la atención fragmentada, la dificultad de funcionar bien bajo presión. Lo que encontré me cambió la manera de ver casi todo.</p>
+    <p>Fuera de la pantalla soy esposo desde hace 33 años, padre de tres hijos y abuelo de dos nietos. Me muevo con crossfit para mantener el cuerpo en forma, leo todo lo que puedo, y últimamente me tiene muy ocupado explorar la inteligencia artificial, campo en el que soy novato pero con una curiosidad que no para. También me gustan los perros y el fútbol, por si hacía falta decirlo.</p>
+    <p>Aquí no encontrarás consejos de autoayuda ni frases motivacionales. Encontrarás explicaciones honestas sobre cómo funciona el sistema nervioso, qué pasa en la mente cuando estás bajo presión, y qué puedes hacer hoy, con respaldo científico.</p>
+    <p class="postura-inline">No soy un experto infalible. Soy alguien que estudió esto, le funciona, y quiere compartirlo.</p>
+    <div class="tag-list">
+      <span class="tag">Psicología de la salud</span>
+      <span class="tag">Neurociencia afectiva</span>
+      <span class="tag">Mindfulness basado en evidencia</span>
+      <span class="tag">Psicología positiva</span>
     </div>
+  </div>
+</section>
 
-    <div id="setup-multi" class="screen setup-screen">
-        <h2 class="setup-title" style="color:var(--multi-primary)">Configurar Junta</h2>
-        <input type="text" id="multi-name" placeholder="Nombre de la Junta" autocomplete="off">
-        <select id="multi-time">
-            <option value="15">15 Minutos</option>
-            <option value="30" selected>30 Minutos</option>
-            <option value="45">45 Minutos</option>
-            <option value="60">60 Minutos</option>
-            <option value="90">90 Minutos</option>
-        </select>
-        <select id="multi-level">
-            <option value="hi">Enfoque Total (Tolerancia Cero)</option>
-            <option value="low">Multitask Bajo (Básico)</option>
-            <option value="allowed">Multitask Permitido (Abierto)</option>
-        </select>
-        <button class="btn" style="background:var(--multi-primary); color:white" onclick="startMultitask()">INICIAR SESIÓN</button>
-        <button class="btn btn-cancel" onclick="goHome()">Cancelar</button>
+<section class="apps-section" id="apps">
+  <div class="apps-inner">
+    <div class="apps-header">
+      <p class="section-label">Herramientas gratuitas</p>
+      <h2>Úsalas ahora mismo,<br>sin registro, sin costo</h2>
     </div>
-
-    <div id="screen-timer" class="screen">
-        <div id="deliverable-display" class="deliverable-display"></div>
-        <div id="timer-display" class="timer-display">00:00</div>
-        
-        <button class="distraction-btn-single" onclick="trackSingleDistraction()">
-            <span class="dist-badge" id="single-dist-count">0</span>
-            <span>Distracción</span>
-        </button>
-
-        <div id="urgent-msg" class="urgent-msg"></div>
-        <div class="controls">
-            <button class="btn btn-stop" onclick="stopSession()">Finalizar</button>
-        </div>
+    <div class="apps-grid">
+      <a href="#" class="app-card">
+        <div class="app-icon">⚡</div>
+        <p class="app-name">Impulso Productivo</p>
+        <p class="app-desc">Timer de sesiones de trabajo con modos Rush, Flow y Reunión. Diseñado desde la psicología del foco y la fatiga mental.</p>
+        <span class="app-cta">Abrir herramienta</span>
+      </a>
+      <a href="#" class="app-card">
+        <div class="app-icon">🧘</div>
+        <p class="app-name">Calma Vital</p>
+        <p class="app-desc">Primeros auxilios neurobiológicos para momentos de estrés agudo. Basado en la obra de Marian Rojas Estapé.</p>
+        <span class="app-cta">Abrir herramienta</span>
+      </a>
+      <a href="#" class="app-card">
+        <div class="app-icon">🌿</div>
+        <p class="app-name">Mind Zen</p>
+        <p class="app-desc">20 técnicas de mindfulness basadas en evidencia, en sesiones de 5 minutos. Sin misticismo, sin incienso.</p>
+        <span class="app-cta">Abrir herramienta</span>
+      </a>
     </div>
+  </div>
+</section>
 
-    <div id="screen-multi-active" class="screen">
-        <div id="focus-warning" class="focus-warning">⚠️ ¡Recuerda: Enfoque Total!</div>
-        <div id="multi-header" class="multi-header">Nombre de Junta</div>
-        <div id="multi-level-display" class="multi-level-label">Enfoque Total</div>
-        <div id="multi-timer" class="multi-timer">00:00</div>
-        
-        <div class="tracker-grid">
-            <button class="track-btn track-dist" onclick="trackEvent('dist')">
-                <span class="track-count" id="count-dist">0</span>
-                <span class="track-label">Distracción</span>
-            </button>
-            <button class="track-btn track-prod" onclick="trackEvent('prod')">
-                <span class="track-count" id="count-prod">0</span>
-                <span class="track-label">Productividad</span>
-            </button>
-        </div>
-        <div class="controls">
-            <button class="btn btn-stop" onclick="finishSession()">Terminar Junta</button>
-        </div>
-    </div>
+<section class="blog-section" id="blog">
+  <div>
+    <p class="section-label">Blog</p>
+    <h2 class="section-title">Temas que<br>me interesan</h2>
+  </div>
+  <div>
+    <p class="blog-intro">Próximamente, artículos sobre estos temas. Sin relleno, sin sensacionalismo. Solo lo que vale la pena leer.</p>
+    <ul class="temas-lista">
+      <li>Estrés y regulación del sistema nervioso</li>
+      <li>Neurociencia aplicada a la vida cotidiana</li>
+      <li>Mindfulness basado en evidencia</li>
+      <li>Productividad y foco desde la psicología</li>
+      <li>Inteligencia emocional</li>
+      <li>Autoestima y autoconocimiento</li>
+      <li>Bienestar en el trabajo y las relaciones</li>
+      <li>Aprender, cambiar y crecer a los 50+</li>
+    </ul>
+  </div>
+</section>
 
-    <div id="screen-debrief" class="screen">
-        <div id="debrief-interaction">
-            <div class="debrief-q">¿Lo lograste?</div>
-            <div style="display:flex; gap:12px; justify-content:center; width:100%;">
-                <button class="btn btn-action" onclick="showDebriefResult(true)">SÍ / AVANCÉ</button>
-                <button class="btn btn-neg" onclick="showDebriefResult(false)">NO / PARCIAL</button>
-            </div>
-        </div>
+<section class="no-section">
+  <div class="no-inner">
+    <p class="section-label">Mi postura</p>
+    <h2>Lo que no encontrarás<br>aquí, y por qué importa</h2>
+    <ul class="no-lista">
+      <li>Contenido esotérico o metafísico sin respaldo científico</li>
+      <li>Diagnósticos ni recomendaciones clínicas de ningún tipo</li>
+      <li>Coaching motivacional con frases vacías que suenan bien pero no sirven</li>
+      <li>Promesas de resultados garantizados ni transformaciones rápidas</li>
+      <li>Títulos alarmistas diseñados para generar clics, no comprensión</li>
+    </ul>
+  </div>
+</section>
 
-        <div id="debrief-result" style="display:none; width: 100%;">
-            <div class="debrief-msg" id="final-msg">"Lo vital es la acción."</div>
-            
-            <div class="cool-down-card" id="card-cooldown">
-                <div class="cool-down-title">Protocolo de Enfriamiento</div>
-                <div class="cool-down-text" id="cool-down-text"></div>
-            </div>
+<footer>
+  <span class="footer-logo">Javier<span>Warrior</span></span>
+  <span class="footer-meta">javierwarrior.com · Zapopan, México</span>
+</footer>
 
-            <div class="stats-card" id="card-stats">
-                <div class="stats-title">Resumen de Atención</div>
-                <div class="stats-text" id="stats-text"></div>
-            </div>
-
-            <button class="btn btn-new" style="display:flex" onclick="goHome()">NUEVA MISIÓN</button>
-        </div>
-    </div>
-
-    <div id="screen-history" class="screen">
-        <div class="history-header">
-            <h2>Historial</h2>
-            <button class="btn-back" onclick="navTo('screen-home')">← Inicio</button>
-        </div>
-        <div class="history-summary">
-            <div class="summary-card">
-                <span class="summary-num" id="sum-sessions">0</span>
-                <span class="summary-label">Sesiones</span>
-            </div>
-            <div class="summary-card">
-                <span class="summary-num" id="sum-minutes">0</span>
-                <span class="summary-label">Min. Enfoque</span>
-            </div>
-            <div class="summary-card">
-                <span class="summary-num" id="sum-dist">0</span>
-                <span class="summary-label">Distracc. Liberadas</span>
-            </div>
-        </div>
-        <div class="history-list" id="history-list"></div>
-        <button class="btn-clear-history" onclick="clearHistory()">Borrar Historial</button>
-    </div>
-
-    <script>
-        // --- MOTOR DE AUDIO ---
-        let audioCtx;
-        let mainGain;
-        let oscillatorNodes = [];
-        
-        // --- ESTADO ---
-        let timerInterval;
-        let currentMode = '';
-        let totalTimeSec = 0;
-        let remainingSec = 0;
-        let isUrgent = false;
-        let wakeLock = null;
-
-        // Variables de Rastreo
-        let multiName = "";
-        let multiLevel = "allowed";
-        let countDist = 0; 
-        let countProd = 0; 
-        let singleDistCount = 0; // Para Rush/Flow
-        let pendingEntry = null; // Sesión Rush/Flow en espera del debrief
-
-        // --- HISTORIAL (localStorage) ---
-        const HISTORY_KEY = 'impulso_productivo_history';
-        const HISTORY_MAX = 50;
-
-        function loadHistory() {
-            try {
-                const raw = localStorage.getItem(HISTORY_KEY);
-                return raw ? JSON.parse(raw) : [];
-            } catch (e) {
-                return [];
-            }
-        }
-
-        function saveHistoryEntry(entry) {
-            try {
-                const list = loadHistory();
-                list.unshift(entry);
-                if (list.length > HISTORY_MAX) list.length = HISTORY_MAX;
-                localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
-            } catch (e) { /* almacenamiento no disponible */ }
-        }
-
-        function clearHistory() {
-            if (!confirm('¿Borrar todo el historial de sesiones? Esta acción no se puede deshacer.')) return;
-            try { localStorage.removeItem(HISTORY_KEY); } catch (e) {}
-            renderHistory();
-        }
-
-        function openHistory() {
-            renderHistory();
-            navTo('screen-history');
-        }
-
-        function fmtDate(iso) {
-            const d = new Date(iso);
-            const today = new Date();
-            const isToday = d.toDateString() === today.toDateString();
-            const time = d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-            if (isToday) return `Hoy, ${time}`;
-            return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' }) + `, ${time}`;
-        }
-
-        function renderHistory() {
-            const list = loadHistory();
-            const container = document.getElementById('history-list');
-
-            let totalMin = 0, totalDist = 0;
-            list.forEach(e => {
-                if (e.mode !== 'multi') totalMin += e.durationMin;
-                totalDist += e.distractions || 0;
-            });
-            document.getElementById('sum-sessions').innerText = list.length;
-            document.getElementById('sum-minutes').innerText = totalMin;
-            document.getElementById('sum-dist').innerText = totalDist;
-
-            if (list.length === 0) {
-                container.innerHTML = '<div class="history-empty">Aún no hay sesiones registradas.<br>Completa una misión para verla aquí.</div>';
-                return;
-            }
-
-            container.innerHTML = list.map(e => {
-                const tagClass = `tag-${e.mode}`;
-                const itemClass = `mode-${e.mode}`;
-                const tagText = e.mode === 'rush' ? 'Rush' : (e.mode === 'flow' ? 'Flow' : 'Reunión');
-                let metaParts = [`${e.durationMin} min`];
-
-                if (e.mode === 'multi') {
-                    metaParts.push(`${e.distractions} distrac.`, `${e.productivity} aportes`);
-                } else {
-                    metaParts.push(e.achieved ? '✅ Lograste avanzar' : '⚠️ Avance parcial');
-                    if (e.distractions > 0) metaParts.push(`${e.distractions} distrac. liberadas`);
-                }
-
-                return `<div class="history-item ${itemClass}">
-                    <div class="history-row-top">
-                        <span class="history-label">${escapeHtml(e.label)}</span>
-                        <span class="history-date">${fmtDate(e.date)}</span>
-                    </div>
-                    <div class="history-meta">
-                        <span class="history-tag ${tagClass}">${tagText}</span>${metaParts.join(' · ')}
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        function escapeHtml(str) {
-            const div = document.createElement('div');
-            div.innerText = str;
-            return div.innerHTML;
-        }
-
-        // --- MENSAJES ---
-        const urgentMessages = [
-            "¡Cero dudas, pura acción! Entrega ese [DEL].",
-            "La perfección es el enemigo. ¡Sigue con [DEL]!",
-            "¡Rápido! No pienses, ejecuta: [DEL].",
-            "Tu tiempo se agota. ¡Cierra [DEL] ya!",
-            "Escribe borrador si hace falta, pero termina [DEL].",
-            "¡Foco total! El reloj no para, tu [DEL] tampoco."
-        ];
-
-        const coolDowns = [
-            "👀 **Visión Panorámica:** Mira al horizonte. Suaviza tu mirada.",
-            "🌬️ **Suspiro Fisiológico:** Inhala doble por nariz, exhala lento por boca (x5).",
-            "🧊 **Agua Fría:** Lávate la cara o muñecas con agua fría.",
-            "⬜ **Respiración Cuadrada:** Inhala 4s, sostén 4s, exhala 4s, espera 4s.",
-            "🚶 **Micro-Caminata:** Camina 2 minutos sin teléfono."
-        ];
-
-        // --- NAVEGACIÓN ---
-        function navTo(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-
-        function goHome() {
-            document.getElementById('rush-deliverable').value = ""; 
-            document.getElementById('flow-deliverable').value = ""; 
-            document.getElementById('multi-name').value = "";
-            
-            // Reset UI States
-            document.getElementById('debrief-interaction').style.display = "block";
-            document.getElementById('debrief-result').style.display = "none";
-            document.getElementById('card-cooldown').style.display = "none";
-            document.getElementById('card-stats').style.display = "none";
-            
-            cleanup();
-            navTo('screen-home');
-        }
-
-        // --- AUDIO FUNCTIONS ---
-        function initAudio() {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-            mainGain = audioCtx.createGain();
-            mainGain.connect(audioCtx.destination);
-        }
-
-        function playRushAudio() {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.value = 50; 
-            const lfo = audioCtx.createOscillator();
-            lfo.type = 'square';
-            lfo.frequency.value = 2.33; 
-            const lfoGain = audioCtx.createGain();
-            lfoGain.gain.value = 0.5; 
-            lfo.connect(lfoGain.gain);
-            osc.connect(gain);
-            gain.connect(mainGain);
-            osc.start();
-            lfo.start();
-            oscillatorNodes.push(osc, lfo);
-            mainGain.gain.setValueAtTime(0.5, audioCtx.currentTime); 
-        }
-
-        function playFlowAudio() {
-            const bufferSize = 4096;
-            const brownNoise = audioCtx.createScriptProcessor(bufferSize, 1, 1);
-            brownNoise.onaudioprocess = function(e) {
-                const output = e.outputBuffer.getChannelData(0);
-                let lastOut = 0;
-                for (let i = 0; i < bufferSize; i++) {
-                    const white = Math.random() * 2 - 1;
-                    output[i] = (lastOut + (0.02 * white)) / 1.02;
-                    lastOut = output[i];
-                    output[i] *= 3.5;
-                }
-            };
-            const gain = audioCtx.createGain();
-            gain.gain.value = 0.3; 
-            brownNoise.connect(gain);
-            gain.connect(mainGain);
-            oscillatorNodes.push(brownNoise); 
-        }
-
-        function playZenBell() {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.frequency.value = 440; 
-            osc.type = 'sine';
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            gain.gain.setValueAtTime(0, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.1);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
-            osc.stop(audioCtx.currentTime + 3);
-        }
-
-        // --- SESIONES ---
-        async function startSession(mode) {
-            if (!audioCtx) initAudio();
-            if (audioCtx.state === 'suspended') await audioCtx.resume();
-            try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch(e){}
-
-            currentMode = mode;
-            let durationMin;
-            let deliverableText = "";
-            singleDistCount = 0; // Reset count
-            document.getElementById('single-dist-count').innerText = "0";
-
-            if (mode === 'rush') {
-                const input = document.getElementById('rush-deliverable');
-                if (!input.value.trim()) {
-                    input.style.borderColor = "var(--rush-primary)";
-                    setTimeout(() => input.style.borderColor = "#E5E7EB", 1000);
-                    return;
-                }
-                deliverableText = input.value;
-                durationMin = parseInt(document.getElementById('rush-time').value);
-                document.body.classList.add('mode-rush');
-                playRushAudio();
-            } else {
-                const input = document.getElementById('flow-deliverable');
-                if (!input.value.trim()) {
-                    input.style.borderColor = "var(--flow-primary)";
-                    setTimeout(() => input.style.borderColor = "#E5E7EB", 1000);
-                    return;
-                }
-                deliverableText = input.value;
-                durationMin = parseInt(document.getElementById('flow-time').value);
-                document.body.classList.add('mode-flow');
-                playFlowAudio();
-            }
-
-            totalTimeSec = durationMin * 60;
-            remainingSec = totalTimeSec;
-            
-            document.getElementById('deliverable-display').innerText = deliverableText;
-            document.getElementById('urgent-msg').style.display = 'none';
-            document.getElementById('screen-timer').classList.remove('urgent-bg');
-            isUrgent = false;
-
-            navTo('screen-timer');
-            runTimer(deliverableText);
-        }
-
-        async function startMultitask() {
-            if (!audioCtx) initAudio();
-            if (audioCtx.state === 'suspended') await audioCtx.resume();
-            try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch(e){}
-
-            const nameInput = document.getElementById('multi-name');
-            if (!nameInput.value.trim()) {
-                nameInput.style.borderColor = "var(--multi-primary)";
-                setTimeout(() => nameInput.style.borderColor = "#E5E7EB", 1000);
-                return;
-            }
-
-            currentMode = 'multi';
-            multiName = nameInput.value;
-            multiLevel = document.getElementById('multi-level').value;
-            let durationMin = parseInt(document.getElementById('multi-time').value);
-            
-            countDist = 0;
-            countProd = 0;
-            document.getElementById('count-dist').innerText = "0";
-            document.getElementById('count-prod').innerText = "0";
-
-            document.body.classList.add('mode-multi');
-            document.getElementById('multi-header').innerText = multiName;
-            
-            let labelText = "";
-            if(multiLevel === 'hi') labelText = "ENFOQUE TOTAL (Zero Tolerance)";
-            else if(multiLevel === 'low') labelText = "MULTITASK BAJO";
-            else labelText = "MULTITASK PERMITIDO";
-            document.getElementById('multi-level-display').innerText = labelText;
-
-            totalTimeSec = durationMin * 60;
-            remainingSec = totalTimeSec;
-            
-            navTo('screen-multi-active');
-            runTimer(multiName);
-        }
-
-        // --- TRACKING ---
-        function trackEvent(type) {
-            if (multiLevel === 'hi') {
-                const warning = document.getElementById('focus-warning');
-                warning.style.display = 'block';
-                setTimeout(() => warning.style.display = 'none', 2000);
-            }
-            if (type === 'dist') {
-                countDist++;
-                document.getElementById('count-dist').innerText = countDist;
-            } else {
-                countProd++;
-                document.getElementById('count-prod').innerText = countProd;
-            }
-        }
-
-        function trackSingleDistraction() {
-            singleDistCount++;
-            document.getElementById('single-dist-count').innerText = singleDistCount;
-        }
-
-        // --- TIMER ENGINE ---
-        function runTimer(deliverable) {
-            const startTime = Date.now();
-            const endTime = startTime + (totalTimeSec * 1000);
-
-            function frame() {
-                const now = Date.now();
-                const diff = endTime - now;
-                
-                if (diff <= 0) {
-                    finishSession();
-                    return;
-                }
-
-                remainingSec = diff / 1000;
-                
-                const min = Math.floor(diff / 60000);
-                const sec = Math.floor((diff % 60000) / 1000);
-                const ms = Math.floor((diff % 1000) / 10);
-                
-                let timeStr = "";
-                if (currentMode === 'rush') {
-                    timeStr = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}:${ms.toString().padStart(2, '0')}`;
-                    document.getElementById('timer-display').innerText = timeStr;
-                } else if (currentMode === 'multi') {
-                    timeStr = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-                    document.getElementById('multi-timer').innerText = timeStr;
-                } else {
-                    timeStr = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-                    document.getElementById('timer-display').innerText = timeStr;
-                }
-
-                if (currentMode === 'rush' && remainingSec <= (totalTimeSec * 0.2)) {
-                    if (!isUrgent) {
-                        isUrgent = true;
-                        document.getElementById('screen-timer').classList.add('urgent-bg');
-                        document.getElementById('urgent-msg').style.display = 'block';
-                        triggerRandomMessage(deliverable);
-                    }
-                }
-
-                if (currentMode !== 'multi' && remainingSec <= 10 && remainingSec > 9.8) {
-                    mainGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 10);
-                }
-
-                timerInterval = requestAnimationFrame(frame);
-            }
-            timerInterval = requestAnimationFrame(frame);
-        }
-
-        function triggerRandomMessage(deliverable) {
-            const msgEl = document.getElementById('urgent-msg');
-            const showMsg = () => {
-                if (remainingSec <= 0) return;
-                const rawMsg = urgentMessages[Math.floor(Math.random() * urgentMessages.length)];
-                msgEl.innerText = rawMsg.replace('[DEL]', deliverable);
-                setTimeout(showMsg, 4000);
-            };
-            showMsg();
-        }
-
-        function stopSession() {
-            if (timerInterval) cancelAnimationFrame(timerInterval);
-            goHome();
-        }
-
-        function finishSession() {
-            if (timerInterval) cancelAnimationFrame(timerInterval);
-            cleanup();
-            playZenBell();
-            if (wakeLock) wakeLock.release();
-
-            // Preparar Debrief
-            document.getElementById('final-msg').innerText = "Lo vital es la acción y el foco. Bien hecho.";
-            
-            if (currentMode === 'multi') {
-                // Modo Reunión
-                document.getElementById('debrief-interaction').style.display = 'none';
-                document.getElementById('debrief-result').style.display = 'block';
-                
-                const cardStats = document.getElementById('card-stats');
-                cardStats.style.display = 'block';
-                document.getElementById('stats-text').innerHTML = 
-                    `Junta: <strong>${multiName}</strong><br>` + 
-                    `Nivel: ${multiLevel.toUpperCase()}<br><br>` +
-                    `<span style="color:var(--rush-primary); font-weight:600">Distracciones: ${countDist}</span><br>` +
-                    `<span style="color:var(--flow-primary); font-weight:600">Aportes: ${countProd}</span>`;
-                document.getElementById('card-cooldown').style.display = 'none';
-
-                saveHistoryEntry({
-                    mode: 'multi',
-                    label: multiName,
-                    durationMin: Math.round(totalTimeSec / 60),
-                    date: new Date().toISOString(),
-                    distractions: countDist,
-                    productivity: countProd,
-                    multiLevel: multiLevel
-                });
-            } else {
-                // Modo Rush/Flow
-                document.getElementById('debrief-interaction').style.display = 'block';
-                document.getElementById('debrief-result').style.display = 'none';
-                
-                // Preparamos el mensaje final por si el usuario da click en "Si/No"
-                if(singleDistCount > 0) {
-                     document.getElementById('final-msg').innerText = `Sesión finalizada. Registraste ${singleDistCount} distracciones liberadas. Bien hecho recuperando el foco.`;
-                }
-
-                pendingEntry = {
-                    mode: currentMode,
-                    label: document.getElementById('deliverable-display').innerText,
-                    durationMin: Math.round(totalTimeSec / 60),
-                    date: new Date().toISOString(),
-                    distractions: singleDistCount
-                };
-            }
-
-            document.body.classList.remove('mode-rush', 'mode-flow', 'mode-multi');
-            navTo('screen-debrief');
-        }
-
-        function showDebriefResult(achieved) {
-            document.getElementById('debrief-interaction').style.display = 'none';
-            document.getElementById('debrief-result').style.display = 'block';
-            
-            const cardCool = document.getElementById('card-cooldown');
-            cardCool.style.display = 'block';
-            const tip = coolDowns[Math.floor(Math.random() * coolDowns.length)];
-            document.getElementById('cool-down-text').innerHTML = tip;
-            
-            // Si hubo distracciones en Rush/Flow, mostrarlas sutilmente
-            if(singleDistCount > 0) {
-                 const cardStats = document.getElementById('card-stats');
-                 cardStats.style.display = 'block';
-                 document.getElementById('stats-text').innerHTML = `Distracciones liberadas: <strong>${singleDistCount}</strong>`;
-            }
-
-            if (pendingEntry) {
-                pendingEntry.achieved = !!achieved;
-                saveHistoryEntry(pendingEntry);
-                pendingEntry = null;
-            }
-        }
-        
-        function cleanup() {
-             oscillatorNodes.forEach(node => { try { node.disconnect(); node.stop(); } catch(e){} });
-             oscillatorNodes = [];
-             document.body.classList.remove('mode-rush', 'mode-flow', 'mode-multi');
-        }
-    </script>
 </body>
 </html>
